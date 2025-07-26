@@ -5,8 +5,8 @@ However,i'll link all the relevant pages and info here for convinience.
 Oh yeah and note: The wiki pages i link are to the main Pale Court Mod.So,things like "Extra dialogue","Found by defeating a boss" only apply to Pale Court.Here i will say how to find the charms in my mod.
 # Abyssal Bloom
 A high risk-high reward charm.It increases your nail damage with masks lost,which can be buffed by Joni's Blessing,Fragile Heart and Sharp Shadow.Other charms like Lifeblood heart and core do not affect it.
-When on half hp,you get 10% incresed dash and shade dash cooldown,also a 10% increase to movement speed.Stacks with Sprint-/Dash- masters.
-When on 1 hp,you get 20% incresed dash and shade dash cooldown,also a 20% increase to movement speed.You also gain 75% extra nail range,which does not stack with Longnail or Mark of Pride. 
+When on half hp,you get 10% decreased dash and shade dash cooldown,also a 10% increase to movement speed.Stacks with Sprint-/Dash- masters.
+When on 1 hp,you get 20% decreased dash and shade dash cooldown,also a 20% increase to movement speed.You also gain 75% extra nail range,which does not stack with Longnail or Mark of Pride. 
 
 Costs 5 notches in vanilla.
 
