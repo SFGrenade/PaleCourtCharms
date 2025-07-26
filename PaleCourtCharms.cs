@@ -98,22 +98,22 @@ namespace PaleCourtCharms
             Charms.Add(new CharmDefinition
             {
                 InternalName = "MarkOfPurity", DisplayName = () => LangStrings.Get("CHARM_NAME_PURITY", "UI"), Description = () => LangStrings.Get("CHARM_DESC_PURITY", "UI"),
-                ShopDesc = () => LangStrings.Get("CHARM_NAME_PURITY", "UI"), Icon = SPRITES["Mark_of_Purity"], NotchCost = CharmCosts[0]
+                ShopDesc = () => LangStrings.Get("SHOP_DESCRIPTION_PURITY", "RANDO"), Icon = SPRITES["Mark_of_Purity"], NotchCost = CharmCosts[0]
             });
             Charms.Add(new CharmDefinition
             {
                 InternalName = "VesselsLament", DisplayName = () => LangStrings.Get("CHARM_NAME_LAMENT", "UI"), Description = () => LangStrings.Get("CHARM_DESC_LAMENT", "UI"),
-                ShopDesc = () => LangStrings.Get("CHARM_NAME_LAMENT", "UI"), Icon = SPRITES["Vessels_Lament"], NotchCost = CharmCosts[1]
+                ShopDesc = () => LangStrings.Get("SHOP_DESCRIPTION_LAMENT", "RANDO"), Icon = SPRITES["Vessels_Lament"], NotchCost = CharmCosts[1]
             });
             Charms.Add(new CharmDefinition
             {
                 InternalName = "BoonOfHallownest", DisplayName = () => LangStrings.Get("CHARM_NAME_BOON", "UI"), Description = () => LangStrings.Get("CHARM_DESC_BOON", "UI"),
-                ShopDesc = () => LangStrings.Get("CHARM_NAME_BOON", "UI"), Icon = SPRITES["Boon_of_Hallownest"], NotchCost = CharmCosts[2]
+                ShopDesc = () => LangStrings.Get("SHOP_DESCRIPTION_BOON", "RANDO"), Icon = SPRITES["Boon_of_Hallownest"], NotchCost = CharmCosts[2]
             });
             Charms.Add(new CharmDefinition
             {
                 InternalName = "AbyssalBloom", DisplayName = () => LangStrings.Get("CHARM_NAME_BLOOM", "UI"), Description = () => LangStrings.Get("CHARM_DESC_BLOOM", "UI"),
-                ShopDesc = () => LangStrings.Get("CHARM_NAME_BLOOM", "UI"), Icon = SPRITES["Abyssal_Bloom"], NotchCost = CharmCosts[3]
+                ShopDesc = () => LangStrings.Get("SHOP_DESCRIPTION_BLOOM", "RANDO"), Icon = SPRITES["Abyssal_Bloom"], NotchCost = CharmCosts[3]
             });
 
             CharmIDs = SFCore.CharmHelper.AddSprites(
