@@ -1,5 +1,7 @@
 I've realised there is a grand total of 0 point in writing everything myself when the wiki exists.
+
 However,i'll link all the relevant pages and info here for convinience.
+
 Oh yeah and note:The wiki pages i link are to the main Pale Court Mod.So,things like "Extra dialogue","Found by defeating a boss" only apply to Pale Court.Here i will say how to find the charms in my mod.
 # Abyssal Bloom
 A high risk-high reward charm.It increases your nail damage with masks lost,which can be buffed by Joni's Blessing,Fragile Heart and Sharp Shadow.Other charms like Lifeblood heart and core do not affect it.
