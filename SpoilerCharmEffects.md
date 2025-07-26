@@ -80,6 +80,7 @@ Lament has a few more charm syneries,you can read about them on wiki.
 Costs 2 notches in vanilla.
 
 Found in Grey Mourner's(Mysterious Ze'mer's) mansion(place where you get the mask shard for completing flower quest). [Room_Mansion,27, 6.4]
+
 Small note: to pick it up,go right until the option to talk to Grey Mourner dissapears.
 
 Detailed wiki page:https://hollowknight.wiki/w/Mod:Pale_Court/Vessel%27s_Lament
