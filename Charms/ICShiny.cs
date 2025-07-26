@@ -92,7 +92,7 @@ namespace PaleCourtCharms
                         UIDef = new MsgUIDef
                         {
                             name = new LanguageString("UI", $"CHARM_NAME_{id}"),
-                            shopDesc = new BoxedString(PaleCourtCharms.Charms[i].ShopDesc),
+                            shopDesc = new BoxedString(PaleCourtCharms.Charms[i].ShopDesc()),  // todo: add some special thing, that might have this also be a languagestring
                             sprite = new EmbeddedSprite { key = key }
                         }
                     };

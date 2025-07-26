@@ -47,7 +47,7 @@ namespace PaleCourtCharms.Rando
             UIDef = new MsgUIDef
             {
                 name = new LanguageString("UI", $"CHARM_NAME_{charmNum}"),
-                shopDesc = new BoxedString(PaleCourtCharms.Charms[CharmIndex].ShopDesc),
+                shopDesc = new BoxedString(PaleCourtCharms.Charms[CharmIndex].ShopDesc()),  // todo: add some special thing, that might have this also be a languagestring
                 sprite = new ICShiny.EmbeddedSprite { key = key }
             };
 
