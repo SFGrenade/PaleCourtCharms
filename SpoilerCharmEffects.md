@@ -14,3 +14,21 @@ Or the really cool video deep dive,if you prefer:https://www.youtube.com/watch?v
 
 
 # Boon of Hallownest
+A spell-oriented charm,that makes your spells have different behaviour and do a whole lot more damage.Also,it makes them look pretty cool.
+Having white/void spells only changes the damage output*.
+*-boon wraiths spawn 2 blasts instead of 4 with shriek,but that still mostly affects just the damage output.
+I'm stating this specifically because for the other 2 spells,only the damage values vary.
+Purified Shade Soul: Launches daggers in a cone in front of the Knight.
+Purified Abyss Shriek: Creates multiple blasts of energy above the Knight.
+Purified Descending Dark: Summons multi-hit pillars when the Knight strikes the ground.
+
+Costs 4 notches in vanilla.
+
+Found in Fungal Wastes,at the end of piligrim's way(City Crest entrence to City of Tears). [Fungus2_21,114.8, 12.4]
+
+For detalied damage values,check the wiki:https://hollowknight.wiki/w/Mod:Pale_Court/Boon_of_Hallownest
+
+Or the really cool video deep dive,if you prefer:https://www.youtube.com/watch?v=lG7Lz-TTjGs .
+
+
+# King's Honour
