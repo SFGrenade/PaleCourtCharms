@@ -2,7 +2,7 @@ I've realised there is a grand total of 0 point in writing everything myself whe
 
 However,i'll link all the relevant pages and info here for convinience.
 
-Oh yeah and note:The wiki pages i link are to the main Pale Court Mod.So,things like "Extra dialogue","Found by defeating a boss" only apply to Pale Court.Here i will say how to find the charms in my mod.
+Oh yeah and note: The wiki pages i link are to the main Pale Court Mod.So,things like "Extra dialogue","Found by defeating a boss" only apply to Pale Court.Here i will say how to find the charms in my mod.
 # Abyssal Bloom
 A high risk-high reward charm.It increases your nail damage with masks lost,which can be buffed by Joni's Blessing,Fragile Heart and Sharp Shadow.Other charms like Lifeblood heart and core do not affect it.
 When on half hp,you get 10% incresed dash and shade dash cooldown,also a 10% increase to movement speed.Stacks with Sprint-/Dash- masters.
@@ -37,6 +37,7 @@ Or the really cool video deep dive,if you prefer:https://www.youtube.com/watch?v
 
 # King's Honour
 This charm is an upgrade to Defender's Crest.Now,instead of being stinky you will emit ~~deodorant~~ royal aura.
+
 As a charm upgrade,this preserves all the properties of defender's crest.Like discount at leg eater,Tuk's gift and Lemm not willing to buy your relics.
 When you acquire the upgrade,the damage from clouds spawned will be incresed,they will spawn more frequently,have bigger radius and will gain an abillity to spread.
 
