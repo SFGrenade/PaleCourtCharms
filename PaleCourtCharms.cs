@@ -17,11 +17,12 @@ using PaleCourtCharms.Rando;
 using System.Linq;
 using RandomizerMod.IC;
 using PaleCourtCharms.Interop;
+
 namespace PaleCourtCharms
 {
     public class PaleCourtCharms : Mod,
-    ILocalSettings<SaveModSettings>,
-    IGlobalSettings<GlobalSettings>
+        ILocalSettings<SaveModSettings>,
+        IGlobalSettings<GlobalSettings>
     {
         public static PaleCourtCharms Instance;
 
@@ -38,27 +39,27 @@ namespace PaleCourtCharms
         public static readonly Dictionary<string, Sprite> SPRITES = new();
 
         private SaveModSettings localSettings = new();
+
         public SaveModSettings OnSaveLocal()
-{
-   
-      if (ModHooks.GetMod("Randomizer 4") is Mod)
-    {
-        localSettings.notchCosts = PaleCourtCharms.CharmCostsByID
-            .OrderBy(kvp => Array.IndexOf(
-                PaleCourtCharms.CharmKeys,
-                PaleCourtCharms.CharmKeys[
-                    PaleCourtCharms.CharmIDs.IndexOf(kvp.Key)
-                ]))
-            .Select(kvp => kvp.Value)
-            .ToList();
-    }
+        {
+            if (ModHooks.GetMod("Randomizer 4") is Mod)
+            {
+                localSettings.notchCosts = PaleCourtCharms.CharmCostsByID
+                    .OrderBy(kvp => Array.IndexOf(
+                        PaleCourtCharms.CharmKeys,
+                        PaleCourtCharms.CharmKeys[
+                            PaleCourtCharms.CharmIDs.IndexOf(kvp.Key)
+                        ]))
+                    .Select(kvp => kvp.Value)
+                    .ToList();
+            }
 
-    return localSettings;
-}
+            return localSettings;
+        }
 
-public void OnLoadLocal(SaveModSettings s)
-{
-    localSettings = s;
+        public void OnLoadLocal(SaveModSettings s)
+        {
+            localSettings = s;
 
             if (ModHooks.GetMod("Randomizer 4") is Mod)
             {
@@ -72,7 +73,7 @@ public void OnLoadLocal(SaveModSettings s)
                     }
                 }
             }
-}
+        }
 
         public static SaveModSettings Settings => Instance?.localSettings;
 
@@ -91,10 +92,34 @@ public void OnLoadLocal(SaveModSettings s)
 
             LoadEmbeddedSprites();
 
-            Charms.Add(new CharmDefinition { InternalName = "MarkOfPurity", DisplayName = "Mark of Purity", Description = "The Vessel was gifted a Pure Nail forged <br>through arcane means as a reflection of itself.<br>This Charm embodies the echoes of that <br>ancient craftmanship.<br><br>Hold ATTACK to concentrate and swing the <br>nail in a frenzy. Gradually increases the <br>bearer's rate of attack as they land nail strikes <br>in quick succession.",ShopDesc = "I see you wield a nail,and this charm looks to be made out of nails.\nIt will be yours... for a price.", Icon = SPRITES["Mark_of_Purity"], NotchCost = CharmCosts[0] });
-            Charms.Add(new CharmDefinition { InternalName = "VesselsLament", DisplayName = "Vessel's Lament", Description = "Contains the hardships and grievances forced<br>upon the chained Vessel. Energy desperately <br>seeps out from within the constraints.<br><br>Focus to twist the SOUL of enemies marked<br>by the nail and unleash devastating blasts of <br>energy upon them.", ShopDesc = "I heard this charm is very good,but never risked to try myself.\nPay up,and you can find out if what they say is true.",Icon = SPRITES["Vessels_Lament"], NotchCost = CharmCosts[1] });
-            Charms.Add(new CharmDefinition { InternalName = "BoonOfHallownest", DisplayName = "Boon of Hallownest", Description = "The Pale Wyrm's beacon shines brighty <br>through this Charm. The blessing bestowed<br>pon the land known as Hallownest was able<br>to elevate the lesser bugs that resided in the domain.<br><br>Transforms all spells to take on a purified form.",ShopDesc = "Found this lying around in fungal.I get shivers just by looking at it,and it looks very important.\n\nDo you want it?", Icon = SPRITES["Boon_of_Hallownest"], NotchCost = CharmCosts[2] });
-            Charms.Add(new CharmDefinition { InternalName = "AbyssalBloom", DisplayName = "Abyssal Bloom", Description = "A dark blossom that was cursed to restrain an<br> uncontrollable power. Even though the <br>arkness within may be repressed, it writhes<br>in a volatile manner threatening to break <br>free.<br><br>The bearer gains overwhelming power as <br>they draw nearer to death.", ShopDesc = "I bought this from some wierd-looking bug for a handful of geo.\n\nI'll sell it to you if you pay enough.",Icon = SPRITES["Abyssal_Bloom"], NotchCost = CharmCosts[3] });
+            Charms.Add(new CharmDefinition
+            {
+                InternalName = "MarkOfPurity", DisplayName = "Mark of Purity",
+                Description =
+                    "The Vessel was gifted a Pure Nail forged <br>through arcane means as a reflection of itself.<br>This Charm embodies the echoes of that <br>ancient craftmanship.<br><br>Hold ATTACK to concentrate and swing the <br>nail in a frenzy. Gradually increases the <br>bearer's rate of attack as they land nail strikes <br>in quick succession.",
+                ShopDesc = "I see you wield a nail,and this charm looks to be made out of nails.\nIt will be yours... for a price.", Icon = SPRITES["Mark_of_Purity"], NotchCost = CharmCosts[0]
+            });
+            Charms.Add(new CharmDefinition
+            {
+                InternalName = "VesselsLament", DisplayName = "Vessel's Lament",
+                Description =
+                    "Contains the hardships and grievances forced<br>upon the chained Vessel. Energy desperately <br>seeps out from within the constraints.<br><br>Focus to twist the SOUL of enemies marked<br>by the nail and unleash devastating blasts of <br>energy upon them.",
+                ShopDesc = "I heard this charm is very good,but never risked to try myself.\nPay up,and you can find out if what they say is true.", Icon = SPRITES["Vessels_Lament"], NotchCost = CharmCosts[1]
+            });
+            Charms.Add(new CharmDefinition
+            {
+                InternalName = "BoonOfHallownest", DisplayName = "Boon of Hallownest",
+                Description =
+                    "The Pale Wyrm's beacon shines brighty <br>through this Charm. The blessing bestowed<br>pon the land known as Hallownest was able<br>to elevate the lesser bugs that resided in the domain.<br><br>Transforms all spells to take on a purified form.",
+                ShopDesc = "Found this lying around in fungal.I get shivers just by looking at it,and it looks very important.\n\nDo you want it?", Icon = SPRITES["Boon_of_Hallownest"], NotchCost = CharmCosts[2]
+            });
+            Charms.Add(new CharmDefinition
+            {
+                InternalName = "AbyssalBloom", DisplayName = "Abyssal Bloom",
+                Description =
+                    "A dark blossom that was cursed to restrain an<br> uncontrollable power. Even though the <br>arkness within may be repressed, it writhes<br>in a volatile manner threatening to break <br>free.<br><br>The bearer gains overwhelming power as <br>they draw nearer to death.",
+                ShopDesc = "I bought this from some wierd-looking bug for a handful of geo.\n\nI'll sell it to you if you pay enough.", Icon = SPRITES["Abyssal_Bloom"], NotchCost = CharmCosts[3]
+            });
 
             CharmIDs = SFCore.CharmHelper.AddSprites(
                 SPRITES["Mark_of_Purity"],
@@ -130,7 +155,8 @@ public void OnLoadLocal(SaveModSettings s)
 
                 var split = res.Split('.');
                 var resName = split.Length >= 3
-                    ? split[split.Length - 2] : Path.GetFileNameWithoutExtension(res);
+                    ? split[split.Length - 2]
+                    : Path.GetFileNameWithoutExtension(res);
 
                 SPRITES[resName] = Sprite.Create(
                     tex,
@@ -138,17 +164,16 @@ public void OnLoadLocal(SaveModSettings s)
                     new Vector2(0.5f, 0.5f),
                     100f
                 );
-
-                
             }
         }
 
         public override List<(string, string)> GetPreloadNames()
         {
             return new List<(string, string)>
-    {
-        ("GG_Hollow_Knight", "Battle Scene/HK Prime"), ("GG_Hollow_Knight", "Battle Scene/Focus Blasts/HK Prime Blast/Blast"),  ("Dream_Final_Boss", "Boss Control/Radiance/Death/Knight Split/Knight Ball"), ("Tutorial_01", "_Props/Tut_tablet_top/Glows"), ("Ruins1_23", "Mage"), ("Dream_Final_Boss", "Boss Control/Radiance")
-    };
+            {
+                ("GG_Hollow_Knight", "Battle Scene/HK Prime"), ("GG_Hollow_Knight", "Battle Scene/Focus Blasts/HK Prime Blast/Blast"), ("Dream_Final_Boss", "Boss Control/Radiance/Death/Knight Split/Knight Ball"), ("Tutorial_01", "_Props/Tut_tablet_top/Glows"),
+                ("Ruins1_23", "Mage"), ("Dream_Final_Boss", "Boss Control/Radiance")
+            };
         }
 
         public override void Initialize(Dictionary<string, Dictionary<string, GameObject>> preloadedObjects)
@@ -204,14 +229,13 @@ public void OnLoadLocal(SaveModSettings s)
                 RandoManager.Hook();
 
 
-
                 Rando.Interop.Setup(
                     PaleCourtCharms.Instance.globalSettings,
                     PaleCourtCharms.Instance
-
                 );
             }
-             if (ModHooks.GetMod("RandoSettingsManager") is Mod)
+
+            if (ModHooks.GetMod("RandoSettingsManager") is Mod)
             {
                 Interop.RSM_Interop.Hook();
             }
@@ -220,32 +244,29 @@ public void OnLoadLocal(SaveModSettings s)
         private static bool randoInitialized = false;
 
 
-
-private static bool GetIsRando()
-{
-    return RandomizerMod.RandomizerMod.RS?.GenerationSettings != null;
-}
-
-private static void HandleNewGame(On.UIManager.orig_StartNewGame orig, UIManager self, bool permaDeath, bool bossRush)
-{
-   
-    orig(self, permaDeath, bossRush);
-
-    if (!randoInitialized)
-    {
-    
-        bool randoLoaded = ModHooks.GetMod("Randomizer 4") is Mod;
-
-        
-        bool isRandoSave = randoLoaded && GetIsRando();
-
-        if (isRandoSave)
+        private static bool GetIsRando()
         {
-            randoInitialized = true;
-            PaleCourtCharms.Instance.StartGame();
+            return RandomizerMod.RandomizerMod.RS?.GenerationSettings != null;
         }
-    }
-}
+
+        private static void HandleNewGame(On.UIManager.orig_StartNewGame orig, UIManager self, bool permaDeath, bool bossRush)
+        {
+            orig(self, permaDeath, bossRush);
+
+            if (!randoInitialized)
+            {
+                bool randoLoaded = ModHooks.GetMod("Randomizer 4") is Mod;
+
+
+                bool isRandoSave = randoLoaded && GetIsRando();
+
+                if (isRandoSave)
+                {
+                    randoInitialized = true;
+                    PaleCourtCharms.Instance.StartGame();
+                }
+            }
+        }
 
         private void GameManager_StartNewGame(On.GameManager.orig_StartNewGame orig, GameManager gm, bool perma, bool bossRush)
         {
@@ -253,7 +274,6 @@ private static void HandleNewGame(On.UIManager.orig_StartNewGame orig, UIManager
 
             if (bossRush)
             {
-                
                 int count = CharmIDs.Count;
                 localSettings.gotCharms = new bool[count];
                 localSettings.newCharms = new bool[count];
@@ -271,86 +291,81 @@ private static void HandleNewGame(On.UIManager.orig_StartNewGame orig, UIManager
         public void StartGame()
         {
             GameManager.instance.gameObject.AddComponent<Amulets>();
-           
+        }
 
-        }
-public static bool IsRandoSave()
-{
-    
-    if (ModHooks.GetMod("Randomizer 4") is Mod)
-    {
-        try
+        public static bool IsRandoSave()
         {
-            var rm = ItemChangerMod.Modules.Get<RandomizerModule>();
-            return rm != null;
-        }
-        catch (NullReferenceException)
-        {
+            if (ModHooks.GetMod("Randomizer 4") is Mod)
+            {
+                try
+                {
+                    var rm = ItemChangerMod.Modules.Get<RandomizerModule>();
+                    return rm != null;
+                }
+                catch (NullReferenceException)
+                {
+                    return false;
+                }
+            }
+
             return false;
         }
-    }
-    return false;
-}
 
 
-       private int OnGetPlayerIntHook(string target, int orig)
+        private int OnGetPlayerIntHook(string target, int orig)
         {
-           
             if (target.StartsWith("charmCost_")
                 && int.TryParse(target.Split('_')[1], out var charmNum))
             {
-               
                 if (!IsRandoSave())
                 {
-                   
                     int idx = PaleCourtCharms.CharmIDs.IndexOf(charmNum);
                     if (idx >= 0 && idx < PaleCourtCharms.CharmCosts.Length)
                         return PaleCourtCharms.CharmCosts[idx];
                 }
                 else if (PaleCourtCharms.CharmCostsByID.TryGetValue(charmNum, out var cost))
                 {
-                   
                     return cost;
                 }
             }
+
             return orig;
         }
 
 
-       private bool OnSetPlayerBool(string target, bool value)
-{
-    if (CharmIDs.Count == 0) return value;
-
-    var parts = target.Split('_');
-    if (parts.Length == 2 && int.TryParse(parts[1], out var charmNum))
-    {
-        var idx = CharmIDs.IndexOf(charmNum);
-        if (idx >= 0)
+        private bool OnSetPlayerBool(string target, bool value)
         {
-            switch (parts[0])
+            if (CharmIDs.Count == 0) return value;
+
+            var parts = target.Split('_');
+            if (parts.Length == 2 && int.TryParse(parts[1], out var charmNum))
             {
-                case "equippedCharm":
-                    localSettings.equippedCharms[idx] = value;
-                    return true;
-                case "gotCharm":
-                    localSettings.gotCharms[idx] = value;
-
-                    if (value)
+                var idx = CharmIDs.IndexOf(charmNum);
+                if (idx >= 0)
+                {
+                    switch (parts[0])
                     {
-                        
-                        GameManager.instance.SaveGame();
+                        case "equippedCharm":
+                            localSettings.equippedCharms[idx] = value;
+                            return true;
+                        case "gotCharm":
+                            localSettings.gotCharms[idx] = value;
+
+                            if (value)
+                            {
+                                GameManager.instance.SaveGame();
+                            }
+
+                            return true;
+                        case "newCharm":
+                            localSettings.newCharms[idx] = value;
+                            return true;
                     }
-
-                    return true;
-                case "newCharm":
-                    localSettings.newCharms[idx] = value;
-                    return true;
+                }
             }
-        }
-    }
 
-    return value;
-}
+            return value;
+        }
 
         private bool ModHooks_GetPlayerBool(string target, bool orig)
         {
@@ -371,19 +386,19 @@ public static bool IsRandoSave()
                     };
                 }
             }
+
             return orig;
         }
 
         private string LangGet(string key, string sheet, string orig)
         {
-
             if (sheet == "UI" && key == "CHARM_NAME_10")
             {
-
                 return localSettings.upgradedCharm_10
                     ? "King’s Honour"
                     : orig;
             }
+
             if (sheet == "UI" && key == "CHARM_DESC_10")
             {
                 return localSettings.upgradedCharm_10
@@ -394,7 +409,6 @@ public static bool IsRandoSave()
 
             if (key.StartsWith("CHARM_NAME_") || key.StartsWith("CHARM_DESC_"))
             {
-
                 var parts = key.Split('_');
                 if (parts.Length == 3 && int.TryParse(parts[2], out int id))
                 {
@@ -439,6 +453,7 @@ public static bool IsRandoSave()
             if (localSettings.upgradedCharm_10)
                 PlayerData.instance.SetBool("upgradedCharm_10", true);
         }
+
         public static GlobalSettings GlobalSettings => Instance?.globalSettings;
         private GlobalSettings globalSettings = new GlobalSettings();
 
@@ -446,24 +461,24 @@ public static bool IsRandoSave()
         {
             globalSettings = s;
         }
+
         public GlobalSettings OnSaveGlobal()
         {
             return globalSettings;
         }
 
         private void HeroController_Awake(On.HeroController.orig_Awake orig, HeroController self)
-        { ItemHandler.ModulesRegistered = false;
-        
+        {
+            ItemHandler.ModulesRegistered = false;
+
             orig(self);
 
             if (GameManager.instance != null && GameManager.instance.gameObject.GetComponent<Amulets>() == null)
             {
                 GameManager.instance.gameObject.AddComponent<Amulets>();
-          
             }
-
         }
-        
+
 
         private new void Log(object msg) => Modding.Logger.Log("[PaleCourtCharms] " + msg);
     }
@@ -474,12 +489,14 @@ public static bool IsRandoSave()
         public int NotchCost;
         public string DisplayName;
         public string Description;
-        public string ShopDesc; 
+        public string ShopDesc;
         public Sprite Icon;
     }
-  public class GlobalSettings {
-    public bool AddCharms { get; set; } = false;
-    public bool RandomizeCosts { get; set; } = false;
-    public string LogicSettings { get; set; } = "{}";
-  }
-} 
+
+    public class GlobalSettings
+    {
+        public bool AddCharms { get; set; } = false;
+        public bool RandomizeCosts { get; set; } = false;
+        public string LogicSettings { get; set; } = "{}";
+    }
+}

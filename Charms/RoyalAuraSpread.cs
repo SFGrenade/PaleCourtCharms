@@ -15,9 +15,9 @@ namespace PaleCourtCharms
 
         private void Awake()
         {
-            foreach(var pool in ObjectPool.instance.startupPools)
+            foreach (var pool in ObjectPool.instance.startupPools)
             {
-                if(pool.prefab.name == "Knight Dung Trail")
+                if (pool.prefab.name == "Knight Dung Trail")
                 {
                     _dungTrail = Instantiate(pool.prefab);
                     _dungTrail.SetActive(false);
@@ -25,6 +25,7 @@ namespace PaleCourtCharms
                     break;
                 }
             }
+
             _dungTrailControl = _dungTrail.LocateMyFSM("Control");
             _dungPt = _dungTrailControl.Fsm.GetFsmGameObject("Pt Normal").Value.GetComponent<ParticleSystem>();
             ParticleSystem.MainModule main = _dungPt.main;
@@ -35,10 +36,10 @@ namespace PaleCourtCharms
 
         private IEnumerator StartCooldown()
         {
-            for(int i = 0; i < _repeat; i++)
+            for (int i = 0; i < _repeat; i++)
             {
                 HealthManager hm = gameObject.GetComponent<HealthManager>();
-                if(hm.hp <= 0 || hm.isDead) break;
+                if (hm.hp <= 0 || hm.isDead) break;
 
                 GameObject dungTrail = Instantiate(_dungTrail, gameObject.transform.position, Quaternion.identity);
                 dungTrail.transform.localScale *= 2f;
@@ -46,6 +47,7 @@ namespace PaleCourtCharms
                 yield return new WaitForSeconds(_cooldown);
                 yield return new WaitUntil(() => gameObject.activeSelf);
             }
+
             yield return new WaitForSeconds(1f);
             Destroy(this);
         }
@@ -56,7 +58,5 @@ namespace PaleCourtCharms
 
             StopAllCoroutines();
         }
-
-       
     }
 }

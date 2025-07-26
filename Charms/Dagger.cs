@@ -11,10 +11,11 @@ namespace PaleCourtCharms
         private void OnTriggerEnter2D(Collider2D collider)
         {
             int layer = collider.gameObject.layer;
-            if(layer == 20 || layer == 9 || layer == 26 || layer == 31 || collider.CompareTag("Geo"))
+            if (layer == 20 || layer == 9 || layer == 26 || layer == 31 || collider.CompareTag("Geo"))
             {
                 return;
             }
+
             HitInstance smallShotHit = new HitInstance();
             smallShotHit.DamageDealt = upgraded ? DaggerDamageUpgraded : DaggerDamage;
             smallShotHit.AttackType = AttackTypes.Spell;
@@ -26,7 +27,5 @@ namespace PaleCourtCharms
 
             HitTaker.Hit(collider.gameObject, smallShotHit, 3);
         }
-
-        
     }
 }

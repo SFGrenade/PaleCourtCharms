@@ -20,25 +20,28 @@ namespace PaleCourtCharms.Interop
         public override VersioningPolicy<string> VersioningPolicy { get; }
             = new EqualityVersioningPolicy<string>(PaleCourtCharms.Instance.GetVersion());
 
-     public override bool TryProvideSettings(out RandoSettings settings) {
-  
-    settings = new RandoSettings {
-        Enabled = PaleCourtCharms.GlobalSettings.AddCharms,
-        RandomizeCosts = PaleCourtCharms.GlobalSettings.RandomizeCosts
-    };
-    return settings.Enabled;
-}
+        public override bool TryProvideSettings(out RandoSettings settings)
+        {
+            settings = new RandoSettings
+            {
+                Enabled = PaleCourtCharms.GlobalSettings.AddCharms,
+                RandomizeCosts = PaleCourtCharms.GlobalSettings.RandomizeCosts
+            };
+            return settings.Enabled;
+        }
 
-public override void ReceiveSettings(RandoSettings settings) {
-    if (settings != null) {
-        
-        PaleCourtCharms.GlobalSettings.AddCharms      = settings.Enabled;
-        PaleCourtCharms.GlobalSettings.RandomizeCosts = settings.RandomizeCosts;
-        ConnectionMenu.Instance.Apply(settings);
-    } else {
-        ConnectionMenu.Instance.Disable();
-    }
-}
-
+        public override void ReceiveSettings(RandoSettings settings)
+        {
+            if (settings != null)
+            {
+                PaleCourtCharms.GlobalSettings.AddCharms = settings.Enabled;
+                PaleCourtCharms.GlobalSettings.RandomizeCosts = settings.RandomizeCosts;
+                ConnectionMenu.Instance.Apply(settings);
+            }
+            else
+            {
+                ConnectionMenu.Instance.Disable();
+            }
+        }
     }
 }

@@ -36,7 +36,6 @@ namespace PaleCourtCharms.Rando
 
         private ConnectionMenu(MenuPage landingPage)
         {
-            
             accessPage = new MenuPage("Pale Court Charms", landingPage);
             topLevelFactory = new MenuElementFactory<RandoSettings>(accessPage, RandoMenuProxy.RS);
             _ = new VerticalItemPanel(
@@ -47,7 +46,7 @@ namespace PaleCourtCharms.Rando
                 topLevelFactory.Elements
             );
 
-           
+
             pageRootButton = new SmallButton(landingPage, "Pale Court Charms");
             pageRootButton.AddHideAndShowEvent(landingPage, accessPage);
 
@@ -71,13 +70,13 @@ namespace PaleCourtCharms.Rando
             };
         }
 
-     
+
         public void Apply(RandoSettings settings)
         {
             topLevelFactory.SetMenuValues(settings);
         }
 
-     
+
         public void Disable()
         {
             var elem = topLevelFactory.ElementLookup[nameof(RandoSettings.Enabled)];

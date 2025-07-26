@@ -1,11 +1,12 @@
-using PaleCourtCharms; 
+using PaleCourtCharms;
 
 namespace PaleCourtCharms.Rando
 {
     public class RandoSettings
     {
-         public bool Enabled { get; set; }
-    public bool RandomizeCosts { get; set; }
+        public bool Enabled { get; set; }
+        public bool RandomizeCosts { get; set; }
+
         public static RandoSettings FromSaveSettings(SaveModSettings s)
         {
             return new RandoSettings
@@ -15,7 +16,7 @@ namespace PaleCourtCharms.Rando
             };
         }
 
-       
+
         public void ApplyTo(SaveModSettings s)
         {
             if (!Enabled)

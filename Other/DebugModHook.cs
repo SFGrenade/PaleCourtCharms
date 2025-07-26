@@ -6,17 +6,12 @@ namespace PaleCourtCharms
     {
         public static void GiveAllCharms(Action callback)
         {
-            
-                DebugMod.BindableFunctions.OnGiveAllCharms += callback;
-           
+            DebugMod.BindableFunctions.OnGiveAllCharms += callback;
         }
 
         public static void RemoveAllCharms(Action callback)
         {
-            
-                DebugMod.BindableFunctions.OnRemoveAllCharms += callback;
-            
-          
+            DebugMod.BindableFunctions.OnRemoveAllCharms += callback;
         }
     }
 }

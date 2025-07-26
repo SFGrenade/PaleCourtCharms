@@ -1,151 +1,51 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
-    <HollowKnightRefs>D:\Steam\steamapps\common\Hollow Knight\hollow_knight_Data\Managed\</HollowKnightRefs>
-   
-  </PropertyGroup>
-
-  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <Product>PaleCourtCharms</Product>
     <RootNamespace>PaleCourtCharms</RootNamespace>
     <AssemblyName>PaleCourtCharms</AssemblyName>
-    <TargetFramework>net472</TargetFramework>
     <AssemblyTitle>PaleCourtCharms</AssemblyTitle>
-    <Product>PaleCourtCharms</Product>
     <Description>Standalone Pale Court Charms Mod</Description>
+    <Copyright>Copyright © Hewlett-Packard 2020</Copyright>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <FileVersion>1.0.0.0</FileVersion>
-    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <FileVersion>$(AssemblyVersion)</FileVersion>
+    <ImplicitUsings>false</ImplicitUsings>
+    <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
+    <OutputPath>bin/$(Configuration)/</OutputPath>
     <LangVersion>latest</LangVersion>
+    <PathMap>$(MSBuildProjectDirectory)=source</PathMap>
+    <AssemblyOriginatorKeyFile>../sgKey.snk</AssemblyOriginatorKeyFile>
+    <HollowKnightRefs>../HkRefs</HollowKnightRefs>
+    <ExportDir>bin/Publish</ExportDir>
+    <!--<GenerateDocumentationFile>true</GenerateDocumentationFile>-->
   </PropertyGroup>
-
-  <Target Name="CopyMod" AfterTargets="PostBuildEvent">
-    <RemoveDir Condition="Exists('$(ExportDir)/$(TargetName)/')" Directories="$(ExportDir)/$(TargetName)/" />
-    <MakeDir Directories="$(ExportDir)/$(TargetName)/" />
-    <MakeDir Directories="$(ExportDir)/$(TargetName)/zip/" />
-    <MakeDir Condition="!Exists('$(HollowKnightRefs)/Mods/$(TargetName)/')" Directories="$(HollowKnightRefs)/Mods/$(TargetName)/" />
-
-    <Copy Condition="'$(DocumentationFile)' != ''" SourceFiles="$(TargetPath);$(TargetDir)/$(TargetName).pdb;$(TargetDir)/$(TargetName).xml" DestinationFolder="$(HollowKnightRefs)/Mods/$(TargetName)/" />
-    <Copy Condition="'$(DocumentationFile)' == ''" SourceFiles="$(TargetPath);$(TargetDir)/$(TargetName).pdb" DestinationFolder="$(HollowKnightRefs)/Mods/$(TargetName)/" />
-
-    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(ExportDir)/$(TargetName)/" />
-
-    <Copy Condition="'$(DocumentationFile)' != ''" SourceFiles="README.md;$(TargetPath);$(TargetDir)/$(TargetName).pdb;$(TargetDir)/$(TargetName).xml" DestinationFolder="$(ExportDir)/$(TargetName)/zip/" />
-    <Copy Condition="'$(DocumentationFile)' == ''" SourceFiles="README.md;$(TargetPath);$(TargetDir)/$(TargetName).pdb" DestinationFolder="$(ExportDir)/$(TargetName)/zip/" />
-
-    <ZipDirectory SourceDirectory="$(ExportDir)/$(TargetName)/zip/" DestinationFile="$(ExportDir)/$(TargetName)/$(TargetName).zip" />
-    <RemoveDir Directories="$(ExportDir)/$(TargetName)/zip/" />
-
-    <PropertyGroup>
-      <OutputFileString>SHA256 - $(AssemblyTitle).dll, Version $(AssemblyVersion):</OutputFileString>
-    </PropertyGroup>
-    <GetFileHash Files="$(ExportDir)/$(TargetName)/$(TargetName).dll" Algorithm="SHA256">
-      <Output TaskParameter="Items" ItemName="FilesWithHashes" />
-    </GetFileHash>
-    <PropertyGroup>
-      <OutputZipString>SHA256 - $(AssemblyTitle).zip:</OutputZipString>
-    </PropertyGroup>
-    <GetFileHash Files="$(ExportDir)/$(TargetName)/$(TargetName).zip" Algorithm="SHA256">
-      <Output TaskParameter="Items" ItemName="ZipFilesWithHashes" />
-    </GetFileHash>
-
-    <WriteLinesToFile File="$(ExportDir)/$(TargetName)/SHA.txt" Lines="$(OutputFileString);@(FilesWithHashes->'%(FileHash)');$(OutputZipString);@(ZipFilesWithHashes->'%(FileHash)')" Overwrite="true" Encoding="UTF-8" />
-  </Target>
-
+  <Import Project="LocalOverrides.targets" Condition="Exists('LocalOverrides.targets')" />
+  <Import Project="build_steps.targets" />
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' AND Exists('$(AssemblyOriginatorKeyFile)') ">
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
   <ItemGroup>
-    <!-- Embed all files under assets folder as resources -->
-  <EmbeddedResource Include="assets\**\*" />
-
-    <!-- Embed charms assetbundle file as resource -->
-    <EmbeddedResource Include="StreamingAssets\charms" />
-    <EmbeddedResource Include="Rando\*.json" />
-
+    <Reference Include="$(HollowKnightRefs)/*.dll" />
+    <Reference Include="$(HollowKnightRefs)/Mods/SFCore/SFCore.dll" />
+    <Reference Include="$(HollowKnightRefs)/Mods/Vasi/Vasi.dll" />
+    <Reference Include="$(HollowKnightRefs)/Mods/DebugMod/DebugMod.dll" />
+    <Reference Include="$(HollowKnightRefs)/Mods/ItemChanger/ItemChanger.dll" />
+    <Reference Include="$(HollowKnightRefs)/Mods/Randomizer 4/RandomizerMod.dll" />
+    <Reference Include="$(HollowKnightRefs)/Mods/RandomizerCore/RandomizerCore.dll" />
+    <Reference Include="$(HollowKnightRefs)/Mods/RandomizerCore.Json/RandomizerCore.Json.dll" />
+    <Reference Include="$(HollowKnightRefs)/Mods/RandoSettingsManager/RandoSettingsManager.dll" />
+    <Reference Include="$(HollowKnightRefs)/Mods/MenuChanger/MenuChanger.dll" />
   </ItemGroup>
-<ItemGroup>
-  <Compile Remove="StreamingAssets/**" />
-  <EmbeddedResource Remove="StreamingAssets/**" />
-  <None Remove="StreamingAssets/**" />
-</ItemGroup>
-
   <ItemGroup>
-    <Reference Include="UnityEngine.AssetBundleModule">
-      <HintPath>$(HollowKnightRefs)/UnityEngine.AssetBundleModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.ImageConversionModule">
-      <HintPath>$(HollowKnightRefs)/UnityEngine.ImageConversionModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.AudioModule">
-      <HintPath>$(HollowKnightRefs)/UnityEngine.AudioModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.Physics2DModule">
-      <HintPath>$(HollowKnightRefs)/UnityEngine.Physics2DModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.AnimationModule">
-      <HintPath>$(HollowKnightRefs)/UnityEngine.AnimationModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.ParticleSystemModule">
-      <HintPath>$(HollowKnightRefs)/UnityEngine.ParticleSystemModule.dll</HintPath>
-    </Reference>
-    <Reference Include="Assembly-CSharp">
-      <HintPath>$(HollowKnightRefs)/Assembly-CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="MMHOOK_Assembly-CSharp">
-      <HintPath>$(HollowKnightRefs)/MMHOOK_Assembly-CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="MMHOOK_PlayMaker">
-      <HintPath>$(HollowKnightRefs)/MMHOOK_PlayMaker.dll</HintPath>
-    </Reference>
-    <Reference Include="MonoMod.RuntimeDetour">
-      <HintPath>$(HollowKnightRefs)/MonoMod.RuntimeDetour.dll</HintPath>
-    </Reference>
-    <Reference Include="MonoMod.Utils">
-      <HintPath>$(HollowKnightRefs)/MonoMod.Utils.dll</HintPath>
-    </Reference>
-    <Reference Include="PlayMaker">
-      <HintPath>$(HollowKnightRefs)/PlayMaker.dll</HintPath>
-    </Reference>
-    <Reference Include="SFCore">
-      <HintPath>$(HollowKnightRefs)/Mods/SFCore/SFCore.dll</HintPath>
-    </Reference>
-    <Reference Include="Vasi">
-      <HintPath>$(HollowKnightRefs)/Mods/Vasi/Vasi.dll</HintPath>
-    </Reference>
-    <Reference Include="DebugMod">
-      <HintPath>$(HollowKnightRefs)/Mods/DebugMod/DebugMod.dll</HintPath>
-    </Reference>
-    <Reference Include="ItemChanger">
-      <HintPath>$(HollowKnightRefs)/Mods/ItemChanger/ItemChanger.dll</HintPath>
-    </Reference>
-    <Reference Include="RandomizerMod">
-      <HintPath>$(HollowKnightRefs)/Mods/Randomizer 4/RandomizerMod.dll</HintPath>
-    </Reference>
-      <Reference Include="RandomizerCore">
-      <HintPath>$(HollowKnightRefs)/Mods/RandomizerCore/RandomizerCore.dll</HintPath>
-    </Reference>
-      <Reference Include="RandomizerCore.Json">
-      <HintPath>$(HollowKnightRefs)/Mods/RandomizerCore.Json/RandomizerCore.Json.dll</HintPath>
-    </Reference>
-      <Reference Include="RandoSettingsManager">
-      <HintPath>$(HollowKnightRefs)/Mods/RandoSettingsManager/RandoSettingsManager.dll</HintPath>
-    </Reference>
-    <Reference Include="MenuChanger">
-      <HintPath>$(HollowKnightRefs)/Mods/MenuChanger/MenuChanger.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>$(HollowKnightRefs)/Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine">
-      <HintPath>$(HollowKnightRefs)/UnityEngine.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.CoreModule">
-      <HintPath>$(HollowKnightRefs)/UnityEngine.CoreModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>$(HollowKnightRefs)/UnityEngine.UI.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
+    <Folder Include="assets" />
+    <Folder Include="Charms" />
+    <Folder Include="Other" />
+    <Folder Include="Rando" />
     <None Include="README.md" />
+    <None Include="SpoilerCharmEffects.md" />
   </ItemGroup>
-
+  <ItemGroup>
+    <EmbeddedResource Include="assets/**" />
+    <EmbeddedResource Include="Rando/*.json" />
+  </ItemGroup>
 </Project>

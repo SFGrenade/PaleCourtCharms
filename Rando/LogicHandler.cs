@@ -13,31 +13,28 @@ namespace PaleCourtCharms.Rando
         {
             if (PaleCourtCharms.GlobalSettings.AddCharms)
             {
-
-
                 RCData.RuntimeLogicOverride.Subscribe(0f, ApplyLogic);
             }
         }
 
-     private static void ApplyLogic(GenerationSettings gs, LogicManagerBuilder lmb)
-{
-    if (!PaleCourtCharms.GlobalSettings.AddCharms)
-        return;
+        private static void ApplyLogic(GenerationSettings gs, LogicManagerBuilder lmb)
+        {
+            if (!PaleCourtCharms.GlobalSettings.AddCharms)
+                return;
 
-    Assembly asm = Assembly.GetExecutingAssembly();
-    JsonLogicFormat fmt = new();
+            Assembly asm = Assembly.GetExecutingAssembly();
+            JsonLogicFormat fmt = new();
 
-    using (var s = asm.GetManifestResourceStream("PaleCourtCharms.Rando.Terms.json"))
-        lmb.DeserializeFile(LogicFileType.Terms, fmt, s);
+            using (var s = asm.GetManifestResourceStream("PaleCourtCharms.Rando.Terms.json"))
+                lmb.DeserializeFile(LogicFileType.Terms, fmt, s);
 
 
-    using (var s = asm.GetManifestResourceStream("PaleCourtCharms.Rando.Locations.json"))
-        lmb.DeserializeFile(LogicFileType.Locations, fmt, s);
+            using (var s = asm.GetManifestResourceStream("PaleCourtCharms.Rando.Locations.json"))
+                lmb.DeserializeFile(LogicFileType.Locations, fmt, s);
 
- 
-    using (var s = asm.GetManifestResourceStream("PaleCourtCharms.Rando.Items.json"))
-        lmb.DeserializeFile(LogicFileType.ItemStrings, fmt, s);
-}
 
+            using (var s = asm.GetManifestResourceStream("PaleCourtCharms.Rando.Items.json"))
+                lmb.DeserializeFile(LogicFileType.ItemStrings, fmt, s);
+        }
     }
 }

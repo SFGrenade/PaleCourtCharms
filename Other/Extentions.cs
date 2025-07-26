@@ -5,6 +5,7 @@ using Modding;
 using UnityEngine;
 using UnityEngine.Playables;
 using Logger = Modding.Logger;
+
 namespace PaleCourtCharms
 {
     // Pure is used here so you can't forget to yield return.
@@ -51,6 +52,7 @@ namespace PaleCourtCharms
                 Logger.Log($"Warning: Could not find animator {anim.name} clip in GetCurrentFrame.");
                 return 999999;
             }
+
             AnimatorClipInfo att = anim.GetCurrentAnimatorClipInfo(0)[0];
             int currentFrame = (int)(anim.GetCurrentAnimatorStateInfo(0).normalizedTime % 1f * (att.clip.length * att.clip.frameRate));
             return currentFrame;
@@ -78,7 +80,7 @@ namespace PaleCourtCharms
                 anim.Play(name, 0, normTime);
             }
         }
-        
+
         [Pure]
         public static IEnumerator PlayBlocking(this Animator self, string anim)
         {
@@ -100,7 +102,7 @@ namespace PaleCourtCharms
 
             yield return new WaitWhile(() => self.GetCurrentFrame() < frame);
         }
-        
+
         [Pure]
         public static IEnumerator PlayToFrameAt(this Animator self, string anim, int start, int frame)
         {
@@ -111,7 +113,7 @@ namespace PaleCourtCharms
 
             yield return new WaitWhile(() => self.GetCurrentFrame() < frame);
         }
-        
+
         [Pure]
         public static IEnumerator WaitToFrame(this Animator self, int frame)
         {
@@ -130,7 +132,7 @@ namespace PaleCourtCharms
                 yield return null;
             }
         }
-        
+
         [Pure]
         public static IEnumerator PlayToEnd(this Animator self)
         {
@@ -138,7 +140,7 @@ namespace PaleCourtCharms
             while (self.GetCurrentAnimatorStateInfo(0).normalizedTime <= 1)
                 yield return null;
         }
-        
+
         [Pure]
         public static IEnumerator WaitForFramesWithActions(this Animator self, params (int frame, Action act)[] acts)
         {
@@ -150,8 +152,8 @@ namespace PaleCourtCharms
                 act();
             }
         }
-        
-        
+
+
         [Pure]
         public static IEnumerator PlayWithActions(this Animator self, string anim, params (int frame, Action act)[] acts)
         {
@@ -185,14 +187,13 @@ namespace PaleCourtCharms
             return Math.Abs(self - rhs) <= threshold;
         }
 
-       
 
         public static AudioSource PlayAudio(this MonoBehaviour mb, AudioClip clip, float volume = 1f,
             float pitchVariation = 0f, Transform posOverride = null, Func<bool> destroyWhen = null)
         {
             GameObject audioPlayer = new GameObject("Audio Player", typeof(AudioSource), typeof(AutoDestroy));
             audioPlayer.transform.position = posOverride == null ? mb.transform.position : posOverride.position;
-            
+
             AutoDestroy autoDestroy = audioPlayer.GetComponent<AutoDestroy>();
             autoDestroy.Time = clip.length + 1f;
             autoDestroy.ShouldDestroy = destroyWhen;

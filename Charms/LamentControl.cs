@@ -21,8 +21,10 @@ namespace PaleCourtCharms
         private PlayerData _pd = PlayerData.instance;
         private HeroController _hc = HeroController.instance;
         private PlayMakerFSM _pvControl;
+
         private void OnEnable()
-        {    On.DamageEnemies.FixedUpdate += SuppressDamageEnemiesError;
+        {
+            On.DamageEnemies.FixedUpdate += SuppressDamageEnemiesError;
             On.HealthManager.TakeDamage += ApplyStatus;
             UnityEngine.SceneManagement.SceneManager.activeSceneChanged += ClearList;
 
@@ -42,40 +44,44 @@ namespace PaleCourtCharms
                 _spellControl.InsertMethod("Focus Heal 2 Blast", 18, BlastControlMain);
             }
 
-            foreach(var pool in ObjectPool.instance.startupPools)
+            foreach (var pool in ObjectPool.instance.startupPools)
             {
-                if(pool.prefab.name == "Knight Spore Cloud")
+                if (pool.prefab.name == "Knight Spore Cloud")
                 {
                     PaleCourtCharms.preloadedGO["SporeCloud"] = pool.prefab;
                 }
-                if(pool.prefab.name == "Knight Dung Cloud")
+
+                if (pool.prefab.name == "Knight Dung Cloud")
                 {
                     PaleCourtCharms.preloadedGO["DungCloud"] = pool.prefab;
                 }
             }
         }
+
         private void BlastControlCancel()
         {
             PureVesselBlastCancel();
         }
+
         private void PureVesselBlastCancel()
         {
             foreach (GameObject enemy in markedEnemies)
             {
-                
                 var index = markedEnemies.IndexOf(enemy);
 
                 try
                 {
-                    if (enemy.GetComponent<Afflicted>()._focusLines != null) {
-                       
+                    if (enemy.GetComponent<Afflicted>()._focusLines != null)
+                    {
                         enemy.GetComponent<Afflicted>()._focusLines.GetComponent<tk2dSpriteAnimator>().Stop();
-                      
+
                         Destroy(enemy.GetComponent<Afflicted>()._focusLines);
-                       
                     }
                 }
-                catch (ArgumentOutOfRangeException e) { }
+                catch (ArgumentOutOfRangeException e)
+                {
+                }
+
                 try
                 {
                     if (markedEnemies[index] != null)
@@ -91,35 +97,41 @@ namespace PaleCourtCharms
                                 enemy.GetComponent<Afflicted>().visible = true;
                                 enemy.GetComponent<Afflicted>().SoulEffect.SetActive(true);
                                 enemy.GetComponent<Afflicted>().SoulEffect.GetComponent<ParticleSystem>().Play();
-                              
                             }
-                            catch ( NullReferenceException e) { }; 
+                            catch (NullReferenceException e)
+                            {
+                            }
 
+                            ;
                         }
                     }
                 }
-                catch (ArgumentOutOfRangeException e) { Log("Exception caught in soul effect"); }
+                catch (ArgumentOutOfRangeException e)
+                {
+                    Log("Exception caught in soul effect");
+                }
 
                 try
                 {
                     enemy.GetComponent<Afflicted>().StopCoroutine(enemy.GetComponent<Afflicted>()._createLine);
-                    
                 }
-                catch (NullReferenceException e) { Log("Couldn't stop create line couroutine"); }
+                catch (NullReferenceException e)
+                {
+                    Log("Couldn't stop create line couroutine");
+                }
+
                 try
                 {
-
                     Destroy(enemy.GetComponent<Afflicted>()._blast);
-                    
-
                 }
-                catch (ArgumentOutOfRangeException e) { Log("Exception caught in blast"); }
+                catch (ArgumentOutOfRangeException e)
+                {
+                    Log("Exception caught in blast");
+                }
                 //_hc.gameObject.GetComponent<LamentControl>()._audio.Stop();
-                
-
             }
-
         }
+
         private void BlastControlFadeIn()
         {
             for (int i = 0; i < markedEnemies.Count; i++)
@@ -135,24 +147,25 @@ namespace PaleCourtCharms
                     Log($"{compare} was in the list twice");
                     markedEnemies.Remove(compare);
                 }
-                
-                
+
+
                 if (enemy == null || !enemy.active)
                 {
                     markedEnemies.RemoveAt(i);
-                   
+
                     i--;
                     continue;
                 }
+
                 enemy.GetComponent<Afflicted>().StartCoroutine(enemy.GetComponent<Afflicted>().PureVesselBlastFadeIn());
             }
         }
+
         private void BlastControlMain()
         {
             List<int> nullenemies = new List<int>();
             foreach (GameObject enemy in markedEnemies)
             {
-                
                 var index = markedEnemies.IndexOf(enemy);
                 if (enemy == null || !enemy.active)
                 {
@@ -160,14 +173,18 @@ namespace PaleCourtCharms
                     Modding.Logger.LogFine("Item was null, continuing");
                     continue;
                 }
-                /*enemy.GetComponent<Afflicted>().*/StartCoroutine(enemy.GetComponent<Afflicted>().PureVesselBlast());
+
+                /*enemy.GetComponent<Afflicted>().*/
+                StartCoroutine(enemy.GetComponent<Afflicted>().PureVesselBlast());
             }
+
             foreach (int i in nullenemies)
             {
                 markedEnemies.RemoveAt(i);
             }
         }
-                private void SuppressDamageEnemiesError(On.DamageEnemies.orig_FixedUpdate orig, DamageEnemies self)
+
+        private void SuppressDamageEnemiesError(On.DamageEnemies.orig_FixedUpdate orig, DamageEnemies self)
         {
             try
             {
@@ -178,6 +195,7 @@ namespace PaleCourtCharms
                 // swallow the error so it no longer spams in the modlog
             }
         }
+
         private void OnDisable()
         {
             On.DamageEnemies.FixedUpdate -= SuppressDamageEnemiesError;
@@ -186,7 +204,6 @@ namespace PaleCourtCharms
 
             if (_spellControl != null)
             {
-
                 _spellControl.RemoveAction("Cancel All", 33);
                 _spellControl.RemoveAction("Focus Cancel", 15);
                 _spellControl.RemoveAction("Focus Cancel 2", 18);
@@ -197,7 +214,6 @@ namespace PaleCourtCharms
                 _spellControl.RemoveAction("Focus Heal Blast", 16);
                 _spellControl.RemoveAction("Focus Heal 2 Blast", 18);
             }
-
         }
 
         private void ClearList(Scene PrevScene, Scene NextScene)
@@ -207,7 +223,6 @@ namespace PaleCourtCharms
             {
                 Log($"This should be empty but {go} is still there");
             }
-            
         }
 
         private void ApplyStatus(On.HealthManager.orig_TakeDamage orig, HealthManager self, HitInstance hitInstance)
@@ -217,14 +232,11 @@ namespace PaleCourtCharms
             {
                 if (self.gameObject.GetComponent<Afflicted>() == null)
                 {
-
                     self.gameObject.AddComponent<Afflicted>();
                     markedEnemies.Add(self.gameObject);
-                  
                 }
             }
         }
-
 
 
         private void Log(object message) => Modding.Logger.Log("[PC_Charms][LamentControl] " + message);
@@ -248,8 +260,16 @@ namespace PaleCourtCharms
             SoulEffect = Instantiate(PaleCourtCharms.preloadedGO["SoulEffect"], gameObject.transform);
             SoulEffect.transform.localPosition = new Vector3(0, 0, -0.0001f);
             Vector2 center = gameObject.transform.position;
-            if (gameObject.GetComponent<SpriteRenderer>() != null) { center = gameObject.GetComponent<SpriteRenderer>().bounds.center; }
-            if (gameObject.GetComponent<tk2dSprite>() != null) { center = gameObject.gameObject.GetComponent<tk2dSprite>().GetBounds().center + gameObject.transform.position; }
+            if (gameObject.GetComponent<SpriteRenderer>() != null)
+            {
+                center = gameObject.GetComponent<SpriteRenderer>().bounds.center;
+            }
+
+            if (gameObject.GetComponent<tk2dSprite>() != null)
+            {
+                center = gameObject.gameObject.GetComponent<tk2dSprite>().GetBounds().center + gameObject.transform.position;
+            }
+
             SoulEffect.transform.position = center;
             SoulEffect.transform.localScale = new Vector3(.75f, .75f, .75f);
 
@@ -259,18 +279,34 @@ namespace PaleCourtCharms
 
             SoulEffect.SetActive(true);
         }
+
         private void Update()
         {
             if (SoulEffect != null)
             {
                 Vector3 center = gameObject.transform.position;
-                if (gameObject.GetComponent<SpriteRenderer>() != null) { center = gameObject.GetComponent<SpriteRenderer>().bounds.center; }
-                if (gameObject.GetComponent<tk2dSprite>() != null) { center = gameObject.GetComponent<tk2dSprite>().GetBounds().center + gameObject.transform.position; }
+                if (gameObject.GetComponent<SpriteRenderer>() != null)
+                {
+                    center = gameObject.GetComponent<SpriteRenderer>().bounds.center;
+                }
+
+                if (gameObject.GetComponent<tk2dSprite>() != null)
+                {
+                    center = gameObject.GetComponent<tk2dSprite>().GetBounds().center + gameObject.transform.position;
+                }
+
                 SoulEffect.transform.position = new Vector3(center.x, center.y, gameObject.transform.position.z + -0.0001f);
                 if (visible)
                 {
-                    if (gameObject.GetComponent<SpriteRenderer>() != null) { SoulEffect.SetActive(gameObject.GetComponent<SpriteRenderer>().isVisible); }
-                    if (gameObject.GetComponent<MeshRenderer>() != null) { SoulEffect.SetActive(gameObject.GetComponent<MeshRenderer>().isVisible); }
+                    if (gameObject.GetComponent<SpriteRenderer>() != null)
+                    {
+                        SoulEffect.SetActive(gameObject.GetComponent<SpriteRenderer>().isVisible);
+                    }
+
+                    if (gameObject.GetComponent<MeshRenderer>() != null)
+                    {
+                        SoulEffect.SetActive(gameObject.GetComponent<MeshRenderer>().isVisible);
+                    }
                 }
             }
             else
@@ -278,12 +314,18 @@ namespace PaleCourtCharms
                 SoulEffect = new GameObject();
                 Start();
             }
-            if (_focusLines != null && _pd.GetBool("equippedCharm_" + Charms.ShapeOfUnn))
-            {  _focusLines.transform.position = gameObject.transform.position;}
-            if (_blast != null && _pd.GetBool("equippedCharm_" + Charms.ShapeOfUnn))
-            { _blast.transform.position = gameObject.transform.position; }
 
+            if (_focusLines != null && _pd.GetBool("equippedCharm_" + Charms.ShapeOfUnn))
+            {
+                _focusLines.transform.position = gameObject.transform.position;
+            }
+
+            if (_blast != null && _pd.GetBool("equippedCharm_" + Charms.ShapeOfUnn))
+            {
+                _blast.transform.position = gameObject.transform.position;
+            }
         }
+
         public IEnumerator FadeOut()
         {
             //while (SoulEffect.GetComponent<SpriteRenderer>().color.a > 0)
@@ -296,14 +338,14 @@ namespace PaleCourtCharms
             visible = false;
             SoulEffect.SetActive(false);
         }
+
         private void OnDisable()
         {
             Destroy(SoulEffect);
         }
+
         public IEnumerator PureVesselBlastFadeIn()
         {
-           
-            
             StartCoroutine(FadeOut());
 
             _createLine = CreateLine();
@@ -337,8 +379,8 @@ namespace PaleCourtCharms
             {
                 anim.speed -= anim.speed * 0.35f;
             }
+
             yield return null;
-           
         }
 
         public IEnumerator CreateLine()
@@ -348,10 +390,12 @@ namespace PaleCourtCharms
             {
                 wait /= 1.33f;
             }
+
             if (_pd.GetBool("equippedCharm_" + Charms.DeepFocus))
             {
                 wait -= wait * 0.35f;
             }
+
             yield return new WaitForSeconds(wait - .2f);
             var heropos = _hc.transform.position - new Vector3(0, 1, 0);
             var enemypos = gameObject.transform.position;
@@ -363,7 +407,7 @@ namespace PaleCourtCharms
             for (lineangle = Mathf.Atan2(num, num2) * (180f / (float)Math.PI); lineangle < 0f; lineangle += 360f)
             {
             }
-           
+
             var linesize = Vector2.Distance(heropos, enemypos);
 
             _line = Instantiate(PaleCourtCharms.preloadedGO["SoulTwister"].LocateMyFSM("Mage").GetAction<CreateObject>("Tele Line").gameObject.Value, linepos, new Quaternion(0, 0, 0, 0));
@@ -378,9 +422,9 @@ namespace PaleCourtCharms
             _line.GetComponent<ParticleSystem>().Play();
             _line.GetComponent<ParticleSystem>().loop = false;
         }
+
         public IEnumerator PureVesselBlast()
         {
-        
             _focusLines.GetComponent<tk2dSpriteAnimator>().Play("Focus Effect End");
             _blast.layer = 17;
             Animator anim = _blast.GetComponent<Animator>();
@@ -388,7 +432,7 @@ namespace PaleCourtCharms
             int hash = anim.GetCurrentAnimatorStateInfo(0).fullPathHash;
             anim.PlayInFixedTime(hash, -1, 0.8f);
 
-           
+
             CircleCollider2D blastCollider = _blast.AddComponent<CircleCollider2D>();
             blastCollider.radius = 2.5f;
             if (_pd.GetBool("equippedCharm_" + Charms.DeepFocus))
@@ -402,8 +446,8 @@ namespace PaleCourtCharms
 
             blastCollider.offset = Vector3.down;
             blastCollider.isTrigger = true;
-           
-          
+
+
             _blast.AddComponent<DamageEnemies>();
             DamageEnemies damageEnemies = _blast.GetComponent<DamageEnemies>();
             damageEnemies.damageDealt = _pd.GetBool("equippedCharm_" + Charms.DeepFocus) ? 60 : 30;
@@ -411,15 +455,14 @@ namespace PaleCourtCharms
             damageEnemies.ignoreInvuln = false;
             damageEnemies.enabled = true;
             this.PlayAudio((AudioClip)_pvControl.GetAction<AudioPlayerOneShotSingle>("Focus Burst", 8).audioClip.Value, 0, 1.5f);
-          
+
 
             // Spawn additional things
-            if(_pd.GetBool("equippedCharm_" + Charms.SporeShroom))
+            if (_pd.GetBool("equippedCharm_" + Charms.SporeShroom))
             {
-                if(_pd.GetBool("equippedCharm_" + Charms.DefendersCrest))
+                if (_pd.GetBool("equippedCharm_" + Charms.DefendersCrest))
                 {
-                    if(PaleCourtCharms.Settings.
-upgradedCharm_10)
+                    if (PaleCourtCharms.Settings.upgradedCharm_10)
                     {
                         Instantiate(_hc.GetComponent<RoyalAura>().dungCloud, transform.position, Quaternion.identity).SetActive(true);
                     }
@@ -440,19 +483,15 @@ upgradedCharm_10)
 
             Destroy(_blast);
             Destroy(_focusLines);
-            
+
             try
             {
                 LamentControl.markedEnemies.RemoveAt(LamentControl.markedEnemies.IndexOf(gameObject));
                 Destroy(gameObject.GetComponent<Afflicted>());
             }
-            catch (NullReferenceException e) { }
-            
-           
-            
+            catch (NullReferenceException e)
+            {
+            }
         }
-       
-       
-
     }
 }

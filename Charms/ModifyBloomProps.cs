@@ -55,7 +55,7 @@ namespace PaleCourtCharms
             _hc.RUN_SPEED_CH = RUN_SPEED_CH * MULTIPLIER_L2;
             _hc.RUN_SPEED_CH_COMBO = RUN_SPEED_CH_COMBO * MULTIPLIER_L2;
             _hc.SHADOW_DASH_COOLDOWN = SHADOW_DASH_COOLDOWN / MULTIPLIER_L2;
-            _hc.shadowRechargePrefab.GetComponent<PlayMakerFSM>().FsmVariables.GetFsmFloat("Shadow Recharge Time").Value = SHADOW_DASH_COOLDOWN / MULTIPLIER_L2 ;
+            _hc.shadowRechargePrefab.GetComponent<PlayMakerFSM>().FsmVariables.GetFsmFloat("Shadow Recharge Time").Value = SHADOW_DASH_COOLDOWN / MULTIPLIER_L2;
         }
 
         public void ResetProps()

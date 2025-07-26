@@ -28,37 +28,40 @@ namespace PaleCourtCharms
             GameObject dung = HeroController.instance.transform.Find("Charm Effects").Find("Dung").gameObject;
             _dungControl = dung.LocateMyFSM("Control");
 
-            foreach(var pool in ObjectPool.instance.startupPools)
+            foreach (var pool in ObjectPool.instance.startupPools)
             {
-                if(pool.prefab.name == "Knight Dung Trail")
+                if (pool.prefab.name == "Knight Dung Trail")
                 {
                     _dungTrail = Instantiate(pool.prefab);
                     _dungTrail.SetActive(false);
                     DontDestroyOnLoad(_dungTrail);
                 }
-                if(pool.prefab.name == "Knight Dung Cloud")
+
+                if (pool.prefab.name == "Knight Dung Cloud")
                 {
                     dungCloud = Instantiate(pool.prefab);
                     dungCloud.SetActive(false);
                     DontDestroyOnLoad(dungCloud);
                 }
             }
+
             _spellControl = HeroController.instance.spellControl;
 
             // Change color of effect
-            if(dung.Find("Particle 1").GetComponent<ModifyAuraColor>() == null) dung.Find("Particle 1").AddComponent<ModifyAuraColor>();
+            if (dung.Find("Particle 1").GetComponent<ModifyAuraColor>() == null) dung.Find("Particle 1").AddComponent<ModifyAuraColor>();
 
             _dungTrailControl = _dungTrail.LocateMyFSM("Control");
             ParticleSystem trailPt = _dungTrailControl.Fsm.GetFsmGameObject("Pt Normal").Value.GetComponent<ParticleSystem>();
             ParticleSystem.MainModule trailMain = trailPt.main;
             trailMain.startColor = PaleColor;
 
-            foreach(ParticleSystem cloudPt in dungCloud.GetComponentsInChildren<ParticleSystem>(true))
+            foreach (ParticleSystem cloudPt in dungCloud.GetComponentsInChildren<ParticleSystem>(true))
             {
                 ParticleSystem.MainModule cloudMain = cloudPt.main;
                 cloudMain.startColor = PaleColor;
             }
-            foreach(tk2dSprite sprite in dungCloud.GetComponentsInChildren<tk2dSprite>(true))
+
+            foreach (tk2dSprite sprite in dungCloud.GetComponentsInChildren<tk2dSprite>(true))
             {
                 sprite.color = Color.white;
             }
@@ -68,9 +71,9 @@ namespace PaleCourtCharms
             _dungControl.GetAction<SpawnObjectFromGlobalPoolOverTime>("Equipped", 0).Enabled = false;
 
             // Add custom dung cloud spawn
-            foreach(string state in new []{ "Dung Cloud", "Dung Cloud 2" })
+            foreach (string state in new[] { "Dung Cloud", "Dung Cloud 2" })
             {
-                if(_spellControl == null) break;
+                if (_spellControl == null) break;
                 _spellControl.GetAction<SpawnObjectFromGlobalPool>(state, 0).Enabled = false;
                 _spellControl.InsertMethod(state, () =>
                 {
@@ -96,19 +99,21 @@ namespace PaleCourtCharms
 
         private void ExtraDamageableRecieveExtraDamage(On.ExtraDamageable.orig_RecieveExtraDamage orig, ExtraDamageable self, ExtraDamageTypes extraDamageType)
         {
-            if(extraDamageType == ExtraDamageTypes.Dung || extraDamageType == ExtraDamageTypes.Dung2)
+            if (extraDamageType == ExtraDamageTypes.Dung || extraDamageType == ExtraDamageTypes.Dung2)
             {
-                if(!self.gameObject.GetComponent<RoyalAuraSpread>()) self.gameObject.AddComponent<RoyalAuraSpread>();
+                if (!self.gameObject.GetComponent<RoyalAuraSpread>()) self.gameObject.AddComponent<RoyalAuraSpread>();
             }
+
             orig(self, extraDamageType);
         }
 
         private int ExtraDamageableGetDamageOfType(On.ExtraDamageable.orig_GetDamageOfType orig, ExtraDamageTypes extraDamageTypes)
         {
-            if(extraDamageTypes == ExtraDamageTypes.Dung || extraDamageTypes == ExtraDamageTypes.Dung2)
+            if (extraDamageTypes == ExtraDamageTypes.Dung || extraDamageTypes == ExtraDamageTypes.Dung2)
             {
                 return _dungDamage;
             }
+
             return orig(extraDamageTypes);
         }
 
@@ -128,13 +133,13 @@ namespace PaleCourtCharms
         private void ActivateAllChildrenOnEnter(On.HutongGames.PlayMaker.Actions.ActivateAllChildren.orig_OnEnter orig, ActivateAllChildren self)
         {
             // Needed for the sound effect and impact lines
-            if(self.Fsm.GameObjectName.Contains("Dung Explosion") && self.State.Name == "Explode")
+            if (self.Fsm.GameObjectName.Contains("Dung Explosion") && self.State.Name == "Explode")
             {
                 GameObject dungTrail = Instantiate(dungCloud, self.Fsm.GameObject.transform.position, Quaternion.identity);
                 dungTrail.SetActive(true);
-                foreach(Component comp in self.Fsm.GameObject.GetComponentsInChildren<Component>(true))
+                foreach (Component comp in self.Fsm.GameObject.GetComponentsInChildren<Component>(true))
                 {
-                    if(!comp.gameObject.name.Contains("Impact"))
+                    if (!comp.gameObject.name.Contains("Impact"))
                     {
                         Destroy(comp.gameObject);
                     }
@@ -144,12 +149,13 @@ namespace PaleCourtCharms
                     }
                 }
             }
+
             orig(self);
         }
-        
+
         private void Tk2dPlayAnimationOnEnter(On.HutongGames.PlayMaker.Actions.Tk2dPlayAnimation.orig_OnEnter orig, Tk2dPlayAnimation self)
         {
-            if(self.Fsm.GameObjectName.Contains("Spell Fluke Dung") && self.State.Name == "Init" && self.clipName.Value == "Dung Air")
+            if (self.Fsm.GameObjectName.Contains("Spell Fluke Dung") && self.State.Name == "Init" && self.clipName.Value == "Dung Air")
             {
                 PlayMakerFSM flukeFSM = self.Fsm.FsmComponent;
                 GameObject fluke = flukeFSM.gameObject;
@@ -160,23 +166,25 @@ namespace PaleCourtCharms
                 main.startColor = PaleColor;
 
                 GameObject flukeCloud = flukeFSM.GetFsmGameObjectVariable("Dung Cloud").Value;
-                foreach(ParticleSystem pt in flukeCloud.GetComponentsInChildren<ParticleSystem>(true))
+                foreach (ParticleSystem pt in flukeCloud.GetComponentsInChildren<ParticleSystem>(true))
                 {
                     ParticleSystem.MainModule cloudMain = pt.main;
                     cloudMain.startColor = PaleColor;
                 }
-                foreach(tk2dSprite sprite in flukeCloud.GetComponentsInChildren<tk2dSprite>(true))
+
+                foreach (tk2dSprite sprite in flukeCloud.GetComponentsInChildren<tk2dSprite>(true))
                 {
                     sprite.color = Color.white;
                 }
             }
+
             orig(self);
         }
 
         private void Update()
         {
             _timer += Time.deltaTime;
-            if(_timer > _frequency)
+            if (_timer > _frequency)
             {
                 _timer = 0f;
                 GameObject dungTrail = Instantiate(_dungTrail, HeroController.instance.transform.position, Quaternion.identity);
@@ -194,9 +202,9 @@ namespace PaleCourtCharms
             _dungControl.GetAction<Wait>("Emit Pause", 2).time.Value = 0.5f;
             _dungControl.GetAction<SpawnObjectFromGlobalPoolOverTime>("Equipped", 0).Enabled = true;
 
-            foreach(string state in new[] { "Dung Cloud", "Dung Cloud 2" })
+            foreach (string state in new[] { "Dung Cloud", "Dung Cloud 2" })
             {
-                if(_spellControl == null) break;
+                if (_spellControl == null) break;
                 _spellControl.RemoveAction(state, 1);
                 _spellControl.GetAction<SpawnObjectFromGlobalPool>(state, 0).Enabled = true;
             }
@@ -208,7 +216,5 @@ namespace PaleCourtCharms
             On.HutongGames.PlayMaker.Actions.ActivateAllChildren.OnEnter -= ActivateAllChildrenOnEnter;
             On.HutongGames.PlayMaker.Actions.Tk2dPlayAnimation.OnEnter -= Tk2dPlayAnimationOnEnter;
         }
-
-        
     }
 }

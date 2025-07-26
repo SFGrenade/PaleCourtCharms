@@ -43,6 +43,7 @@ namespace PaleCourtCharms
                 Logger.Log("[PaleCourtCharms] Unloaded CharmUnlock AssetBundle.");
             }
         }
+
         public static T LoadAsset<T>(AssetBundle bundle, string assetName, string label) where T : Object
         {
             if (bundle == null)

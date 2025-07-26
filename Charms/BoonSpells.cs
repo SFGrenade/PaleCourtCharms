@@ -28,7 +28,7 @@ namespace PaleCourtCharms
 
             PlayMakerFSM _pvControl = Instantiate(PaleCourtCharms.preloadedGO["PV"].LocateMyFSM("Control"), _hc.transform);
 
-            if(!PaleCourtCharms.preloadedGO.ContainsKey("Plume"))
+            if (!PaleCourtCharms.preloadedGO.ContainsKey("Plume"))
             {
                 GameObject plume = Instantiate(_pvControl.GetAction<SpawnObjectFromGlobalPool>("Plume Gen", 0).gameObject.Value);
                 plume.SetActive(false);
@@ -39,7 +39,7 @@ namespace PaleCourtCharms
                 PaleCourtCharms.preloadedGO["Plume"] = plume;
             }
 
-            if(!PaleCourtCharms.preloadedGO.ContainsKey("BoonDagger"))
+            if (!PaleCourtCharms.preloadedGO.ContainsKey("BoonDagger"))
             {
                 GameObject dagger = Instantiate(_pvControl.GetAction<FlingObjectsFromGlobalPoolTime>("SmallShot LowHigh").gameObject.Value);
                 dagger.SetActive(false);
@@ -67,7 +67,7 @@ namespace PaleCourtCharms
 
         private void ModifySpellFSM(bool enabled)
         {
-            if(enabled)
+            if (enabled)
             {
                 _spellControl.ChangeTransition("Level Check 3", "LEVEL 1", "Scream Antic1 Blasts");
                 _spellControl.ChangeTransition("Level Check 3", "LEVEL 2", "Scream Antic2 Blasts");
@@ -75,7 +75,7 @@ namespace PaleCourtCharms
                 _spellControl.ChangeTransition("Quake1 Down", "HERO LANDED", "Q1 Land Plumes");
                 _spellControl.ChangeTransition("Quake2 Down", "HERO LANDED", "Q2 Land Plumes");
 
-                if(!PlayerData.instance.GetBool(nameof(PlayerData.equippedCharm_11)))
+                if (!PlayerData.instance.GetBool(nameof(PlayerData.equippedCharm_11)))
                 {
                     _spellControl.ChangeTransition("Level Check", "LEVEL 1", "Fireball 1 SmallShots");
                     _spellControl.ChangeTransition("Level Check", "LEVEL 2", "Fireball 2 SmallShots");
@@ -100,12 +100,12 @@ namespace PaleCourtCharms
             int angleMin = shaman ? -30 : -25;
             int angleMax = shaman ? 30 : 25;
             int increment = shaman ? 20 : 25;
-            for(int angle = angleMin; angle <= angleMax; angle += increment)
+            for (int angle = angleMin; angle <= angleMax; angle += increment)
             {
-                GameObject dagger = Instantiate(PaleCourtCharms.preloadedGO["BoonDagger"], 
+                GameObject dagger = Instantiate(PaleCourtCharms.preloadedGO["BoonDagger"],
                     HeroController.instance.transform.position, Quaternion.identity);
                 dagger.SetActive(false);
-                if(angle != angleMin) Destroy(dagger.GetComponent<AudioSource>());
+                if (angle != angleMin) Destroy(dagger.GetComponent<AudioSource>());
 
                 Rigidbody2D rb = dagger.GetComponent<Rigidbody2D>();
                 rb.isKinematic = true;
@@ -123,7 +123,7 @@ namespace PaleCourtCharms
 
         public void CastPlumes(bool upgraded)
         {
-            for(float x = 2; x <= 10; x += 2)
+            for (float x = 2; x <= 10; x += 2)
             {
                 Vector2 pos = HeroController.instance.transform.position;
                 float plumeY = pos.y - 1.8f;
@@ -136,6 +136,7 @@ namespace PaleCourtCharms
                 plumeR.SetActive(true);
                 plumeR.AddComponent<Plume>().upgraded = upgraded;
             }
+
             PlayAudio("Plume Up", 1.5f, 1.5f, 0.5f, 0.25f);
         }
 
@@ -149,33 +150,36 @@ namespace PaleCourtCharms
                 blasts.Add(SpawnBlast(HeroController.instance.transform.position + Vector3.up * 4f, upgraded));
                 yield return new WaitForSeconds(0.2f);
 
-                for(int i = 0; i < (upgraded ? 3 : 1); i++)
+                for (int i = 0; i < (upgraded ? 3 : 1); i++)
                 {
-                    blasts.Add(SpawnBlast(HeroController.instance.transform.position + 
-                        Vector3.up * Random.Range(4, 10) + Vector3.right * Random.Range(-3, 3), upgraded));
+                    blasts.Add(SpawnBlast(HeroController.instance.transform.position +
+                                          Vector3.up * Random.Range(4, 10) + Vector3.right * Random.Range(-3, 3), upgraded));
                     yield return new WaitForSeconds(0.2f);
                 }
             }
+
             IEnumerator DisableColliderCoro()
             {
                 yield return new WaitForSeconds(0.15f);
 
-                for(int i = 0; i < blasts.Count; i++)
+                for (int i = 0; i < blasts.Count; i++)
                 {
                     Destroy(blasts[i].GetComponent<CircleCollider2D>());
                     yield return new WaitForSeconds(0.2f);
                 }
             }
+
             IEnumerator DestroyBlastsCoro()
             {
                 yield return new WaitForSeconds(0.5f);
 
-                for(int i = 0; i < blasts.Count; i++)
+                for (int i = 0; i < blasts.Count; i++)
                 {
                     Destroy(blasts[i]);
                     yield return new WaitForSeconds(0.2f);
                 }
             }
+
             StartCoroutine(CastBlastsCoro());
             StartCoroutine(DisableColliderCoro());
             StartCoroutine(DestroyBlastsCoro());
@@ -223,6 +227,7 @@ namespace PaleCourtCharms
                 yield return new WaitForSeconds(audioClip.length + 3f);
                 Destroy(audioPlayerInstance);
             }
+
             GameManager.instance.StartCoroutine(Play());
         }
     }

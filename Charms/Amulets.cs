@@ -31,7 +31,6 @@ namespace PaleCourtCharms
 
         public void Awake()
         {
-       
             On.HeroController.Start += On_HeroController_Start;
             On.CharmIconList.GetSprite += CharmIconList_GetSprite;
             ModHooks.CharmUpdateHook += CharmUpdate;
@@ -41,20 +40,19 @@ namespace PaleCourtCharms
         {
             if (PaleCourtCharms.Settings.upgradedCharm_10)
             {
-               
                 self.spriteList[10] = PaleCourtCharms.SPRITES["Kings_Honour"];
             }
             else
             {
                 self.spriteList[10] = PaleCourtCharms.SPRITES["Defenders_Crest"];
             }
+
             return orig(self, id);
         }
 
         public void On_HeroController_Start(On.HeroController.orig_Start orig, HeroController self)
         {
             orig(self);
-
 
 
             //RepositionCharmsInInventory();
@@ -66,7 +64,7 @@ namespace PaleCourtCharms
 
             //_pd.CalculateNotchesUsed();
 
-           
+
             _spellControl = _hc.spellControl;
             GameObject fireballParent = _spellControl.GetAction<SpawnObjectFromGlobalPool>("Fireball 2", 3).gameObject.Value;
             PlayMakerFSM fireballCast = fireballParent.LocateMyFSM("Fireball Cast");
@@ -81,7 +79,7 @@ namespace PaleCourtCharms
             // Boon of Hallownest
             _hc.gameObject.AddComponent<BoonSpells>().enabled = false;
             InsertCharmSpellEffectsInFsm();
-            
+
             // Vessels Lament
             _hc.gameObject.AddComponent<LamentControl>().enabled = false;
 
@@ -93,9 +91,7 @@ namespace PaleCourtCharms
             ModifyFuryForBloom();
             ModifySpellsForBloom();
 
-            
 
-           
             _activated = true;
         }
 
@@ -169,17 +165,19 @@ namespace PaleCourtCharms
             var knightAnim = self.GetComponent<tk2dSpriteAnimator>();
             tk2dSpriteCollectionData collectionData = heroSprite.Collection;
             List<tk2dSpriteDefinition> knightSpriteDefs = collectionData.spriteDefinitions.ToList();
-            foreach(tk2dSpriteDefinition def in collection.spriteCollection.spriteDefinitions)
+            foreach (tk2dSpriteDefinition def in collection.spriteCollection.spriteDefinitions)
             {
                 def.material.shader = shader;
                 knightSpriteDefs.Add(def);
             }
+
             heroSprite.Collection.spriteDefinitions = knightSpriteDefs.ToArray();
             List<tk2dSpriteAnimationClip> knightClips = knightAnim.Library.clips.ToList();
-            foreach(tk2dSpriteAnimationClip clip in animation.clips)
+            foreach (tk2dSpriteAnimationClip clip in animation.clips)
             {
                 knightClips.Add(clip);
             }
+
             knightAnim.Library.clips = knightClips.ToArray();
 
             GameObject cycloneSlashVoid = Instantiate(attacks.FindGameObjectInChildren("Cyclone Slash"), attacks.transform);
@@ -196,7 +194,7 @@ namespace PaleCourtCharms
 
             // Nail Arts FSM
             PlayMakerFSM nailArts = self.gameObject.LocateMyFSM("Nail Arts");
-            if(nailArts.FsmStates[0].Fsm == null)
+            if (nailArts.FsmStates[0].Fsm == null)
             {
                 nailArts.Preprocess();
             }
@@ -256,18 +254,9 @@ namespace PaleCourtCharms
             nailArts.AddTransition("Bloom Activated DSlash?", "NORMAL", "Dash Slash");
             nailArts.AddTransition("Bloom Activated GSlash?", "VOID", "G Slash Void");
             nailArts.AddTransition("Bloom Activated GSlash?", "NORMAL", "G Slash");
-            nailArts.AddMethod("Bloom Activated CSlash?", () =>
-            {
-                nailArts.SetState(PaleCourtCharms.Settings.equippedCharms[3] && _pd.health <= 1 ? "Cyclone Start Void" : "Cyclone Start");
-            });
-            nailArts.AddMethod("Bloom Activated DSlash?", () =>
-            {
-                nailArts.SetState(PaleCourtCharms.Settings.equippedCharms[3] && _pd.health <= 1 ? "Dash Slash Void" : "Dash Slash");
-            });
-            nailArts.AddMethod("Bloom Activated GSlash?", () =>
-            {
-                nailArts.SetState(PaleCourtCharms.Settings.equippedCharms[3] && _pd.health <= 1 ? "G Slash Void" : "G Slash");
-            });
+            nailArts.AddMethod("Bloom Activated CSlash?", () => { nailArts.SetState(PaleCourtCharms.Settings.equippedCharms[3] && _pd.health <= 1 ? "Cyclone Start Void" : "Cyclone Start"); });
+            nailArts.AddMethod("Bloom Activated DSlash?", () => { nailArts.SetState(PaleCourtCharms.Settings.equippedCharms[3] && _pd.health <= 1 ? "Dash Slash Void" : "Dash Slash"); });
+            nailArts.AddMethod("Bloom Activated GSlash?", () => { nailArts.SetState(PaleCourtCharms.Settings.equippedCharms[3] && _pd.health <= 1 ? "G Slash Void" : "G Slash"); });
 
             // Change Knight animation clips
             nailArts.GetAction<Tk2dPlayAnimationWithEvents>("Cyclone Start Void").clipName = "NA Cyclone Start Void";
@@ -328,19 +317,21 @@ namespace PaleCourtCharms
         private IEnumerator ResetVoidNarts(GameObject[] narts)
         {
             // This is necessary because otherwise the very first void nail art will always be a normal one
-            foreach(GameObject nart in narts)
+            foreach (GameObject nart in narts)
             {
                 nart.SetActive(true);
             }
+
             yield return new WaitForEndOfFrame();
-            foreach(GameObject nart in narts)
+            foreach (GameObject nart in narts)
             {
                 nart.SetActive(false);
             }
         }
 
         private void ModifyFuryForBloom()
-        {try
+        {
+            try
             {
                 PlayMakerFSM fury = _hc.gameObject.FindGameObjectInChildren("Charm Effects").LocateMyFSM("Fury");
                 Modding.Logger.LogFine("Fury Color: " + fury.GetAction<Tk2dSpriteSetColor>("Activate", 17).color.Value);
@@ -356,7 +347,9 @@ namespace PaleCourtCharms
                 fury.InsertMethod("Stay Furied", 4, () => _hc.GetComponent<AbyssalBloomBehaviour>().SetFury(true));
                 fury.InsertMethod("Deactivate", 21, () => _hc.GetComponent<AbyssalBloomBehaviour>().SetFury(false));
             }
-            catch (NullReferenceException) { }
+            catch (NullReferenceException)
+            {
+            }
         }
 
         private void ModifySpellsForBloom()
@@ -383,14 +376,12 @@ namespace PaleCourtCharms
 
         private void CharmUpdate(PlayerData playerData, HeroController hc)
         {
-        
-            if(!_activated)
+            if (!_activated)
             {
-             
                 return;
             }
 
-            _hc.GetComponent<RoyalAura>().enabled = 
+            _hc.GetComponent<RoyalAura>().enabled =
                 playerData.GetBool("equippedCharm_" + Charms.DefendersCrest) && PaleCourtCharms.Settings.upgradedCharm_10;
 
             _hc.GetComponent<Purity>().enabled = PaleCourtCharms.Settings.equippedCharms[0];
@@ -502,7 +493,6 @@ namespace PaleCourtCharms
         {
             if (_blastKnight != null)
             {
-                
                 _blastKnight.layer = 17;
                 Animator anim = _blastKnight.GetComponent<Animator>();
                 anim.speed = 1;
@@ -528,8 +518,15 @@ namespace PaleCourtCharms
                 Modding.Logger.LogFine("Adding DamageEnemies");
                 _blastKnight.AddComponent<DamageEnemies>();
                 DamageEnemies damageEnemies = _blastKnight.GetComponent<DamageEnemies>();
-                if (_pd.GetBool("equippedCharm_" + Charms.DeepFocus)) { damageEnemies.damageDealt = 80; }
-                else { damageEnemies.damageDealt = 40; }
+                if (_pd.GetBool("equippedCharm_" + Charms.DeepFocus))
+                {
+                    damageEnemies.damageDealt = 80;
+                }
+                else
+                {
+                    damageEnemies.damageDealt = 40;
+                }
+
                 damageEnemies.attackType = AttackTypes.Spell;
                 damageEnemies.ignoreInvuln = false;
                 damageEnemies.enabled = true;
@@ -541,7 +538,7 @@ namespace PaleCourtCharms
                 blastCollider.enabled = false;
                 yield return new WaitForSeconds(0.69f);
                 Destroy(_blastKnight);
-            }         
+            }
         }
 
         private void CancelBlast()

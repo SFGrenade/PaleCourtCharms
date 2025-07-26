@@ -15,7 +15,8 @@ namespace PaleCourtCharms
     {
         [PublicAPI]
         public static void RemoveAction<T>(this PlayMakerFSM fsm, string stateName) where T : FsmStateAction
-        {try
+        {
+            try
             {
                 FsmState t = fsm.GetState(stateName);
 
@@ -26,7 +27,10 @@ namespace PaleCourtCharms
                 Logger.LogFine(action.GetType().ToString());
 
                 t.Actions = actions;
-            } catch(NullReferenceException){}
+            }
+            catch (NullReferenceException)
+            {
+            }
         }
 
         [PublicAPI]
@@ -34,7 +38,7 @@ namespace PaleCourtCharms
         {
             return fsm.FsmStates.FirstOrDefault(t => t.Name == stateName);
         }
-        
+
         [PublicAPI]
         public static FsmStateAction GetAction(this PlayMakerFSM fsm, string stateName, int index)
         {
@@ -180,7 +184,7 @@ namespace PaleCourtCharms
             sre.events = events.ToArray();
             sre.weights = weights.ToArray();
         }
-        
+
         public static void AddToSendRandomEventV2
         (
             this SendRandomEventV2 sre,
@@ -211,7 +215,7 @@ namespace PaleCourtCharms
             sre.trackingInts = trackingInts.ToArray();
             sre.eventMax = eventMax.ToArray();
         }
-        
+
         [PublicAPI]
         public static FsmState CreateState(this PlayMakerFSM fsm, string stateName)
         {
@@ -227,7 +231,7 @@ namespace PaleCourtCharms
         /* Helper method specifically for creating a series of states leading to a final "Idle" state */
         public static void CreateStates(this PlayMakerFSM fsm, string[] stateNames, string finalState)
         {
-            for (int i = stateNames.Length - 1; i >= 0 ; i--)
+            for (int i = stateNames.Length - 1; i >= 0; i--)
             {
                 string state = stateNames[i];
                 fsm.CreateState(state);
@@ -235,7 +239,7 @@ namespace PaleCourtCharms
                     i + 1 < stateNames.Length ? stateNames[i + 1] : finalState);
             }
         }
-        
+
         private static void Log(string str)
         {
             Logger.Log("[FSM UTIL]: " + str);

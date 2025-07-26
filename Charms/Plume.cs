@@ -1,4 +1,3 @@
-
 using System.Collections;
 using HutongGames.PlayMaker.Actions;
 using UnityEngine;
@@ -57,7 +56,5 @@ namespace PaleCourtCharms
             Vector2 pos = transform.position;
             return Physics2D.Raycast(pos + Vector2.up, Vector2.down, rayLength, CollisionMask);
         }
-
-       
     }
 }

@@ -15,13 +15,13 @@ namespace PaleCourtCharms
 
         private void Update()
         {
-            if(ps == null)
+            if (ps == null)
             {
                 ps = gameObject.GetComponent<ParticleSystem>();
             }
+
             ParticleSystem.MainModule main = ps.main;
-            main.startColor = PaleCourtCharms.Settings.
-upgradedCharm_10 ? PaleColor : DefaultColor;
+            main.startColor = PaleCourtCharms.Settings.upgradedCharm_10 ? PaleColor : DefaultColor;
         }
     }
 }
